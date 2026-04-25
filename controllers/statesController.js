@@ -140,7 +140,7 @@ const updateFunfact = async (req, res) => {
     }
 
     if (!index) {
-        return res.status(404).json({ 'message': 'State fun facts value required' })
+        return res.status(404).json({ 'message': 'State fun fact index value required' })
     } else {
         if (updateIndex < 0 || updateIndex >= existingState.funfacts.length) {
             return res.status(404).json({ 'message': `No Fun Fact found at that index for ${state.state}` })
@@ -165,7 +165,7 @@ const deleteFunfact = async (req, res) => {
     }
 
     if (!index) {
-        return res.status(404).json({ 'message': 'Fun fact index value required' })
+        return res.status(404).json({ 'message': 'State fun fact index value required' })
     } else {
         if (deleteIndex < 0 || deleteIndex >= existingState.funfacts.length) {
             return res.status(404).json({ 'message': `No Fun Fact found at that index for ${state.state}` })
