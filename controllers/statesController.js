@@ -13,7 +13,7 @@ const getAllStates = async (req, res) => {
 
     res.json(statesData)
 }
-const getState = (req, res) => {
+const getState = async (req, res) => {
     const stateParam = req.params.state.toUpperCase()
     const state = statesData.find(state => state.code === stateParam)
     const responseState = {...state};
