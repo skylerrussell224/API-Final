@@ -18,16 +18,21 @@ connectDB();
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.use('/states', require('./routes/states'))
+app.use('/states', require('./routes/states'));
 
 // routes
 app.get('/', (req, res) => {res.send('States API running');});
 
-// 404 catch all
+// catch all
 app.use((req, res) => {
-    res.status(404).json({
-        message: 'Route not found'
-    })
+    res.status(404);
+    if (req.accepts('html')) {
+        res.sendFile(path.join(__dirname, 'views', '404.html'));
+    } else if (req.accepts('json')){
+        res.json({ "error": "404 Not Found"});
+    } else {
+        res.type('txt').send("404 Not Found");
+    }
 });
 
 mongoose.connection.once('open', () => {
