@@ -87,6 +87,9 @@ const getFunfact = async (req, res) => {
     if (!stateFacts || stateFacts.funfacts.length === 0) {
         return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` })
     }
+    if(!Array.isArray(stateFacts.funfacts)) {
+        return res.status(400).json({'message': "State fun facts value must be an array"})
+    }
     const randomFact =
         stateFacts.funfacts[
         Math.floor(Math.random() * stateFacts.funfacts.length)
