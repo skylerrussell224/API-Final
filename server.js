@@ -9,6 +9,7 @@ const cors = require('cors');
 const corsOptions = require('./config/corsOptions');
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
+const path = require('path');
 
 const PORT = process.env.PORT || 3500;
 
@@ -18,10 +19,14 @@ connectDB();
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.use('/states', require('./routes/states'));
 
-// routes
-app.get('/', (req, res) => {res.send('States API running');});
+// root routes
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+});
+
+// api routes
+app.use('/states', require('./routes/states'));
 
 // catch all
 app.use((req, res) => {
@@ -35,9 +40,6 @@ app.use((req, res) => {
     }
 });
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
-})
 
 mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB');
