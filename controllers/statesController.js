@@ -65,7 +65,7 @@ const getPopulation = async (req, res) => {
     const stateParam = req.params.state.toUpperCase()
     const state = statesData.find(state => state.code === stateParam)
     res.json({
-        state: state.state,
+        state: state.state.toUpperCase(),
         population: state.population
     })
 }
@@ -85,7 +85,7 @@ const getFunfact = async (req, res) => {
     const stateFacts = await stateMongo.findOne({ stateCode: stateParam })
 
     if (!stateFacts || stateFacts.funfacts.length === 0) {
-        return res.status(404).json({ 'message': 'State fun facts value required' })
+        return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` })
     }
     const randomFact =
         stateFacts.funfacts[
@@ -133,7 +133,7 @@ const updateFunfact = async (req, res) => {
     const existingState = await stateMongo.findOne({ stateCode: stateParam })
     const funfact = req.body.funfact
 
-    if (!existingState || existingState.funfacts.length === 0) {
+    if (!existingState) {
         return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` })
     }
     if (req.body.index === undefined) {
@@ -162,7 +162,7 @@ const deleteFunfact = async (req, res) => {
     const state = statesData.find(s => s.code === stateParam)
     const existingState = await stateMongo.findOne({ stateCode: stateParam })
 
-    if (!existingState || existingState.funfacts.length === 0) {
+    if (!existingState) {
         return res.status(404).json({ message: `No Fun Facts found for ${state.state}` })
     }
     if (req.body.index === undefined) {
