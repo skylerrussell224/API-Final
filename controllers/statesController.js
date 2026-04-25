@@ -3,6 +3,7 @@ const stateMongo = require('../models/States')
 
 const getAllStates = async (req, res) => {
     const contig = req.query.contig
+    let filteredStates = statesData;
 
     if (contig === "true") {
         return res.json(statesData.filter(s => s.code !== "AK" && s.code !== "HI"))
@@ -10,6 +11,25 @@ const getAllStates = async (req, res) => {
     if (contig === "false") {
         return res.json(statesData.filter(s => s.code === "AK" || s.code === "HI"))
     }
+
+    const dbStates = await stateMongo.find().lean();
+
+    const responseStates = filteredStates.map(state => {
+        const match = dbStates.find(
+            dbState => dbState.stateCode === state.code
+        );
+
+        if (match?.funfacts?.length) {
+            return {
+                ...state,
+                funfacts: match.funfacts
+            };
+        };
+
+        return state;
+    });
+
+    res.json(responseStates);
 
     res.json(statesData)
 }
