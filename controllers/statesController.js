@@ -16,15 +16,14 @@ const getAllStates = async (req, res) => {
 const getState = (req, res) => {
     const stateParam = req.params.state.toUpperCase()
     const state = statesData.find(state => state.code === stateParam)
-    const funFacts = await stateMongo.findOne({
-        stateCode: stateParam
-    }).lean();
+    const responseState = {...state};
 
-    if (funFacts?.funfacts?.length) {
-        state.funfacts = funFacts.funfacts;
+    const dbState = await stateMongo.findOne({stateCode: stateParam}).lean();
+
+    if (dbState?.funfacts?.length) {
+        responseState.funfacts = dbState.funfacts;
     }
-
-    res.json(state);
+    res.json(responseState)
 }
 const getStateCapital = async (req, res) => {
     const stateParam = req.params.state.toUpperCase()
