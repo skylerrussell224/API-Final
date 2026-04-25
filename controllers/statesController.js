@@ -133,10 +133,10 @@ const updateFunfact = async (req, res) => {
     const existingState = await stateMongo.findOne({ stateCode: stateParam })
     const funfact = req.body.funfact
 
-    if (!existingState) {
+    if (!existingState || existingState.funfacts.length === 0) {
         return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` })
     }
-    if (!req.body.index) {
+    if (req.body.index === undefined) {
         return res.status(400).json({
             message: "State fun fact index value required"
         });
@@ -144,7 +144,7 @@ const updateFunfact = async (req, res) => {
 
     const updateIndex = req.body.index - 1
 
-    if (!req.body.funfact || typeof req.body.funfact !== "string"){
+    if (typeof req.body.funfact !== "string" || req.body.funfact.trim().length === 0){
         return res.status(400).json({ message: "State fun fact value required"});
     }
     if (updateIndex < 0 || updateIndex >= existingState.funfacts.length) {
@@ -162,10 +162,10 @@ const deleteFunfact = async (req, res) => {
     const state = statesData.find(s => s.code === stateParam)
     const existingState = await stateMongo.findOne({ stateCode: stateParam })
 
-    if (!existingState) {
+    if (!existingState || existingState.funfacts.length === 0) {
         return res.status(404).json({ message: `No Fun Facts found for ${state.state}` })
     }
-    if (!req.body.index) {
+    if (req.body.index === undefined) {
         return res.status(400).json({ message: 'State fun fact index value required'});
     }
     
