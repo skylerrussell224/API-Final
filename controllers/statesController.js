@@ -84,8 +84,11 @@ const getFunfact = async (req, res) => {
 
     const stateFacts = await stateMongo.findOne({ stateCode: stateParam })
 
-    if (!stateFacts || stateFacts.funfacts.length === 0) {
+    if (!stateFacts) {
         return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` })
+    }
+    if (!Array.isArray(stateFacts)) {
+        return res.status(404).json({ 'message': `State funf acts value must be an array` }) // no working
     }
     const randomFact =
         stateFacts.funfacts[
@@ -137,7 +140,7 @@ const updateFunfact = async (req, res) => {
         return res.status(400).json({'message': "State fun fact index value required"});
     }
     if (typeof req.body.funfact !== 'string'){
-            return res.status(400).json({ 'message': "State fun fact value required"}); // not working
+            return res.status(400).json({ 'message': "State fun fact value required"});
     }
     if (!existingState) {
             return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` })
