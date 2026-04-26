@@ -65,7 +65,7 @@ const getPopulation = async (req, res) => {
     const stateParam = req.params.state.toUpperCase()
     const state = statesData.find(state => state.code === stateParam)
     res.json({
-        state: state.state.toUpperCase(),
+        state: state.state,
         population: state.population
     })
 }
@@ -73,7 +73,7 @@ const getAdmission = async (req, res) => {
     const stateParam = req.params.state.toUpperCase()
     const state = statesData.find(state => state.code === stateParam)
     res.json({
-        state: state.state.toUpperCase(),
+        state: state.state,
         admitted: state.admission_number
     })
 }
