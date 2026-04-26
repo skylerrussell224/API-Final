@@ -137,16 +137,16 @@ const updateFunfact = async (req, res) => {
         return res.status(400).json({'message': "State fun fact index value required"});
     }
     if (!existingState) {
-            return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` }) // correct
+            return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` })
     }
 
     const updateIndex = req.body.index - 1
 
-    if (typeof req.body.funfact !== "string" || req.body.funfact.trim().length === 0){
-        return res.status(400).json({ 'message': "State fun fact value required"});
+    if (typeof req.body.funfact !== 'string'){
+        return res.status(400).json({ 'message': "State fun fact value required"}); // not working
     }
     if (updateIndex < 0 || updateIndex >= existingState.funfacts.length) {
-        return res.status(404).json({ 'message': `No Fun Fact found at that index for ${state.state}` }) // correct
+        return res.status(404).json({ 'message': `No Fun Fact found at that index for ${state.state}` })
     } else {
         existingState.funfacts[updateIndex] = funfact
         const result = await existingState.save();
@@ -164,13 +164,13 @@ const deleteFunfact = async (req, res) => {
         return res.status(400).json({ 'message': 'State fun fact index value required'}); 
     }
     if (!existingState) {
-        return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` }) // correct
+        return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` })
     }
 
     const deleteIndex = req.body.index - 1
 
     if (deleteIndex < 0 || deleteIndex >= existingState.funfacts.length) {
-        return res.status(404).json({ 'message': `No Fun Fact found at that index for ${state.state}` }) // correct
+        return res.status(404).json({ 'message': `No Fun Fact found at that index for ${state.state}` })
     } else {
         existingState.funfacts.splice(deleteIndex, 1);
         const result = await existingState.save();
