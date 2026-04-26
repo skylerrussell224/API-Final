@@ -87,9 +87,6 @@ const getFunfact = async (req, res) => {
     if (!stateFacts) {
         return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` })
     }
-    if (!Array.isArray(stateFacts.funfacts)) {
-        return res.status(400).json({ 'message': `State fun facts value must be an array` }) // no working
-    }
     const randomFact =
         stateFacts.funfacts[
         Math.floor(Math.random() * stateFacts.funfacts.length)
@@ -106,7 +103,10 @@ const createNewFunfact = async (req, res) => {
     if (!req?.params?.state || !req?.body?.funfacts) {
         return res.status(400).json({ 'message': 'State fun facts value required' });
     }
-
+        if (!Array.isArray(stateFacts.funfacts)) {
+        return res.status(400).json({ 'message': `State fun facts value must be an array` }) // no working
+    }
+    
     const existingState = await stateMongo.findOne({
         stateCode: stateParam
     })
