@@ -136,15 +136,15 @@ const updateFunfact = async (req, res) => {
     if (req.body.index === undefined) {
         return res.status(400).json({'message': "State fun fact index value required"});
     }
+    if (typeof req.body.funfact !== 'string'){
+            return res.status(400).json({ 'message': "State fun fact value required"}); // not working
+    }
     if (!existingState) {
             return res.status(404).json({ 'message': `No Fun Facts found for ${state.state}` })
     }
 
     const updateIndex = req.body.index - 1
-
-    if (typeof req.body.funfact !== 'string'){
-        return res.status(400).json({ 'message': "State fun fact value required"}); // not working
-    }
+    
     if (updateIndex < 0 || updateIndex >= existingState.funfacts.length) {
         return res.status(404).json({ 'message': `No Fun Fact found at that index for ${state.state}` })
     } else {
