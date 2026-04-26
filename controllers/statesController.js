@@ -103,11 +103,10 @@ const createNewFunfact = async (req, res) => {
     if (!req?.params?.state || !req?.body?.funfacts) {
         return res.status(400).json({ 'message': 'State fun facts value required' });
     }
-    /*
-    if (!Array.isArray(stateFacts.funfacts)) {
+    if (!Array.isArray(req.body.funfacts)) {
         return res.status(400).json({ 'message': `State fun facts value must be an array` }) // no working
     }
-    */
+
     const existingState = await stateMongo.findOne({
         stateCode: stateParam
     })
