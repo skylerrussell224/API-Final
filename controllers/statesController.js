@@ -74,7 +74,7 @@ const getAdmission = async (req, res) => {
     const state = statesData.find(state => state.code === stateParam)
     res.json({
         state: state.state,
-        admitted: state.admission_number
+        admitted: state.admission_date
     })
 }
 
